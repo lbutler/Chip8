@@ -10,6 +10,9 @@ CHIP8.Opcodes = (function() {
 	var X;   //4-bit register identifier
 	var Y;   //4-bit register identifier
 
+
+	// Opcodes
+
 	opERR = function(opcode) {
 		throw new Error("Unknown opcode " + opcode.toString(16));
 	};
@@ -44,8 +47,6 @@ CHIP8.Opcodes = (function() {
 
 	_6XNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [6XNN] Sets VX to NN.' );
-		console.log(X);
-		console.log(NN);
 	};
 
 	_7XNN = function(opcode) {
@@ -116,9 +117,45 @@ CHIP8.Opcodes = (function() {
 		console.log( (opcode).toString(16) + ' - [EXA1] Skips the next instruction if the key stored in VX isnt pressed.' );
 	};
 
-	//	TODO:
-	//	Add support for FTable Function Pointer
+	_FX07 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX07] - Sets VX to the value of the delay timer.' );
+	};
 
+	_FX0A = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX0A] - A key press is awaited, and then stored in VX.' );
+	};
+
+	_FX15 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX15] - Sets the delay timer to VX.' );
+	};
+
+	_FX18 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX18] - Sets the sound timer to VX.' );
+	};
+
+	_FX1E = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX1E] - Adds VX to I.' );
+	};
+
+	_FX29 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX29] - Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.' );
+	};
+
+	_FX33 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX33] - Stores the Binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.)' );
+	};
+
+	_FX55 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX55] - Stores V0 to VX in memory starting at address I' );
+	};
+
+	_FX65 = function(opcode) {
+		console.log( (opcode).toString(16) + ' - FX65] - Fills V0 to VX with values from memory starting at address I.' );
+	};
+
+
+
+	// Opcode Lookup tables
 
 	_0Table = function(opcode) {
 		var _0opcodes = [
@@ -131,10 +168,7 @@ CHIP8.Opcodes = (function() {
 		_0opcodes[(opcode & 0x000f)](opcode);
 	};
 
-	
-
 	_8Table = function(opcode) {
-
 		var _8opcodes = [
 			_8XY0, _8XY1, _8XY2, _8XY3, _8XY4, _8XY5, _8XY6, _8XY7,
 			opERR, opERR, opERR, opERR, opERR, opERR, _8XYE, opERR
@@ -143,33 +177,43 @@ CHIP8.Opcodes = (function() {
 		_8opcodes[(opcode & 0x000f)](opcode);
 	};
 
-
-
 	_ETable = function(opcode) {
-		console.log( (opcode).toString(16) + ' - Lookup ETable' );
-
 		var _Eopcodes = [
-			opCodeErr, opCodeErr, opCodeErr, opCodeErr, opCodeErr, opCodeErr, opCodeErr, opCodeErr,	opCodeErr,
+			opERR, opERR, opERR, opERR, opERR, opERR, opERR, opERR,	opERR,
 			_EX9E,
 			_EXA1,
-			opCodeErr, opCodeErr, opCodeErr, opCodeErr, opCodeErr
+			opERR, opERR, opERR, opERR, opERR
 		];
 
 		_Eopcodes[(opcode & 0x00f0)>>4](opcode);
 	};
 	
-
 	_FTable = function(opcode) {
-		console.log( (opcode).toString(16) + ' - Lookup FTable' );
+
+		var _Fopcodes = {
+			'7': _FX07,
+			'A': _FX0A,
+			'15': _FX15,
+			'18': _FX18,
+			'1E': _FX1E,
+			'29': _FX29,
+			'33': _FX33,
+			'55': _FX55,
+			'65': _FX65
+		};
+
+		_Fopcodes[(opcode & 0x00ff).toString(16)](opcode);
 	};
 	
-
 	var opcodeTable = [
 		_0Table, _1NNN,	_2NNN, _3XNN, _4XNN, _5XY0, _6XNN, _7XNN,
 		_8Table, _9XY0, _ANNN, _BNNN, _CXNN, _DXYN, _ETable, _FTable
 	];
 
-	Opcodes.prototype.getProcess = function(opcode) {
+
+	// Public Methods
+
+	Opcodes.prototype.getOperation = function(opcode) {
 
 		NNN = (opcode  & 0x0FFF);
 		NN = (opcode & 0x00FF);
