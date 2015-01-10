@@ -4,43 +4,55 @@ CHIP8.Cpu = (function() {
 
 	var Cpu = {};
 
-	var pc = 0x200;
-	var stack = new Array(16);
-	var sp = 0;
-	var v = new Uint8Array(16);
-	var i = 0;
-	var memory = new Uint8Array(4096);
+	Cpu.pc = 0x200;
+	Cpu.stack = new Array(16);
+	Cpu.sp = 0;
+	Cpu.V = new Uint8Array(16);
+	Cpu.I = 0;
+	Cpu.memory = new Uint8Array(4096);
 
-	var displayWidth = 64;
-	var displayHeight = 32;
-	var gfx = new Array(displayWidth * displayHeight);
+	Cpu.displayWidth = 64;
+	Cpu.displayHeight = 32;
+	Cpu.gfx = new Array(Cpu.displayWidth * Cpu.displayHeight);
 
-	var drawFlag = false;
+	Cpu.drawFlag = false;
 
-	var delayTimer = 0;
-	var soundTimer = 0;
+	Cpu.delayTimer = 0;
+	Cpu.soundTimer = 0;
 
 	var keys = {};
 
-	Cpu.opcodes = { getProcess: function(opcode) {} };
+	Cpu.opcodes = { getOperation: function(opcode) {} };
 
 
 
 	Cpu.loadProgram = function(program) {
       for (var i = 0, length = program.length; i < length; i++) {
-        memory[0x200 + i] = program[i];
+        this.memory[0x200 + i] = program[i];
       }
     };
 
     Cpu.emulateCycle = function() {
-		var opcode = memory[pc] << 8 | memory[pc + 1];
+		//Grab opcode
+		var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
+		this.pc += 2;
 
-		var opcodeFunc = Cpu.opcodes.getProcess(opcode).bind(Cpu);
+		//Find and then run opcode function
+		var opcodeFunc = this.opcodes.getOperation(opcode).bind(Cpu);
 		opcodeFunc(opcode);
 
-		//opcodeTable[(opcode & 0xf000)>>12](opcode);
+		//Update timers
+		if(this.delayTimer > 0)
+			--this.delayTimer;
 
-		pc += 2;
+		if(this.soundTimer > 0)
+		{
+			if(this.soundTimer === 1)
+				console.log("BEEP"); //Todo make sound object
+			--this.soundTimer;
+		}
+			
+		
     };
 
 
