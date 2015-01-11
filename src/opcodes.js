@@ -47,14 +47,17 @@ CHIP8.Opcodes = (function() {
 
 	_6XNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [6XNN] Sets VX to NN.' );
+		this.V[X] = NN;
 	};
 
 	_7XNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [7XNN] Adds NN to VX.' );
+		this.V[X] += NN;
 	};
 
 	_8XY0 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY0] Sets VX to the value of VY.' );
+		this.V[X] = this.V[Y];
 	};
 
 	_8XY1 = function(opcode) {
@@ -71,6 +74,7 @@ CHIP8.Opcodes = (function() {
 
 	_8XY4 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY4] Adds VY to VX. VF is set to 1 when theres a carry, and to 0 when there isnt.' );
+		this.V[X] += this.V[X];
 	};
 
 	_8XY5 = function(opcode) {
