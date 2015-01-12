@@ -237,7 +237,7 @@ CHIP8.Opcodes = (function() {
 			opERR
 		];
 
-		_0opcodes[(opcode & 0x000f)](opcode);
+		return _0opcodes[(opcode & 0x000f)];
 	};
 
 	_8Table = function(opcode) {
@@ -246,7 +246,7 @@ CHIP8.Opcodes = (function() {
 			opERR, opERR, opERR, opERR, opERR, opERR, _8XYE, opERR
 		];
 
-		_8opcodes[(opcode & 0x000f)](opcode);
+		return _8opcodes[(opcode & 0x000f)];
 	};
 
 	_ETable = function(opcode) {
@@ -257,7 +257,7 @@ CHIP8.Opcodes = (function() {
 			opERR, opERR, opERR, opERR, opERR
 		];
 
-		_Eopcodes[(opcode & 0x00f0)>>4](opcode);
+		return _Eopcodes[(opcode & 0x00f0)>>4];
 	};
 	
 	_FTable = function(opcode) {
@@ -274,7 +274,7 @@ CHIP8.Opcodes = (function() {
 			'65': _FX65
 		};
 
-		_Fopcodes[(opcode & 0x00ff).toString(16)](opcode);
+		return _Fopcodes[(opcode & 0x00ff).toString(16)];
 	};
 	
 	var opcodeTable = [
