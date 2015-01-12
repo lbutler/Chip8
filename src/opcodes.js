@@ -41,14 +41,20 @@ CHIP8.Opcodes = (function() {
 
 	_3XNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [3XNN] Skips the next instruction if VX equals NN.' );
+		if ( this.V[X] == NN )
+			this.pc +=2;
 	};
 
 	_4XNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [4XNN] Skips the next instruction if VX doesnt equal NN.' );
+		if ( this.V[X] != NN )
+			this.pc +=2;
 	};
 
 	_5XY0 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [5XY0] Skips the next instruction if VX equals VY.' );
+		if ( this.V[X] == this.V[Y] )
+			this.pc +=2;
 	};
 
 	_6XNN = function(opcode) {
@@ -125,10 +131,13 @@ CHIP8.Opcodes = (function() {
 
 	_9XY0 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [9XY0] Skips the next instruction if VX doesnt equal VY.' );
+		if ( this.V[X] != this.V[Y] )
+			this.pc +=2;
 	};
 
 	_ANNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [ANNN] Sets I to the address NNN.' );
+		this.I = NNN;
 	};
 
 	_BNNN = function(opcode) {
@@ -155,6 +164,7 @@ CHIP8.Opcodes = (function() {
 
 	_FX07 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX07] - Sets VX to the value of the delay timer.' );
+		this.V[X] = this.delayTimer;
 	};
 
 	_FX0A = function(opcode) {
@@ -163,30 +173,44 @@ CHIP8.Opcodes = (function() {
 
 	_FX15 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX15] - Sets the delay timer to VX.' );
+		this.delayTimer = this.V[X];
 	};
 
 	_FX18 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX18] - Sets the sound timer to VX.' );
+		this.soundTimer = this.V[X];
 	};
 
 	_FX1E = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX1E] - Adds VX to I.' );
+		this.I = this.I + this.V[X];
 	};
 
 	_FX29 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX29] - Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.' );
+		this.I =  this.V[X] * 5;
 	};
 
 	_FX33 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX33] - Stores the Binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.)' );
+		this.memory[this.I]		= parseInt(this.V[X] / 100, 16);
+		this.memory[this.I + 1]	= parseInt((this.V[X] / 10 % 10), 16);
+		this.memory[this.I + 2]	= (this.V[X] % 100) % 10;
 	};
 
 	_FX55 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX55] - Stores V0 to VX in memory starting at address I' );
+		for (var i = 0; i < 16; i++) {
+			this.memory[this.I + i] = this.V[i];
+		}
+		
 	};
 
 	_FX65 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX65] - Fills V0 to VX with values from memory starting at address I.' );
+		for (var i = 0; i < 16; i++) {
+			this.V[i] = this.memory[this.I + i];
+		}
 	};
 
 
