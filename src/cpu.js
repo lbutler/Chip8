@@ -47,7 +47,7 @@ CHIP8.Cpu = (function() {
 		];
 
 		for (var i = 0, length = fonts.length; i < length; i++) {
-			this.memory[i] = fonts[i];
+			Cpu.memory[i] = fonts[i];
 		}
 	};
 
