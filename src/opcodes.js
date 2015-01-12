@@ -23,14 +23,20 @@ CHIP8.Opcodes = (function() {
 
 	_00EE = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [00EE] Returns from a subroutine.' );
+		this.pc = this.stack[this.sp - 1];
+		this.sp--;
 	};
 
 	_1NNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [1NNN] Jumps to address NNN.' );
+		this.pc = NNN;
 	};
 
 	_2NNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [2NNN] Calls subroutine at NNN.' );
+		this.stack[this.sp] = this.pc;
+		this.sp++;
+		this.pc = NNN;
 	};
 
 	_3XNN = function(opcode) {
@@ -62,35 +68,59 @@ CHIP8.Opcodes = (function() {
 
 	_8XY1 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY1] Sets VX to VX or VY.' );
+		this.V[X] = this.V[X] | this.V[Y];
 	};
 
 	_8XY2 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY2] Sets VX to VX and VY.' );
+		this.V[X] = this.V[X] & this.V[Y];
 	};
 
 	_8XY3 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY3] Sets VX to VX xor VY.' );
+		this.V[X] = this.V[X] ^ this.V[Y];
 	};
 
 	_8XY4 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY4] Adds VY to VX. VF is set to 1 when theres a carry, and to 0 when there isnt.' );
-		this.V[X] += this.V[X];
+		var temp = this.V[X] += this.V[Y];
+		if (temp > 255) {
+			this.V[0xF] = 1;
+		} else {
+			this.V[0xF] = 0;
+		}
 	};
 
 	_8XY5 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY5] VY is subtracted from VX. VF is set to 0 when theres a borrow, and 1 when there isnt.' );
+		this.V[X] -= this.V[Y];
+		if (temp > 0) {
+			this.V[0xF] = 1;
+		} else {
+			this.V[0xF] = 0;
+		}
 	};
 
 	_8XY6 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY6] Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.' );
+		this.V[0xF] = this.V[Y] & 1;
+		this.V[X] = this.V[Y] >> 1;
 	};
 
 	_8XY7 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XY7] Sets VX to VY minus VX. VF is set to 0 when theres a borrow, and 1 when there isnt.' );
+		this.V[X] = this.V[Y] - this.V[X];
+		if (temp > 0) {
+			this.V[0xF] = 1;
+		} else {
+			this.V[0xF] = 0;
+		}
 	};
 
 	_8XYE = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [8XYE] Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.' );
+		this.V[0xF] = this.V[Y] >> 7; //Everyone else seems to do this by AND'ing 128, lets see if I found out why shortly
+		this.V[X] = this.V[Y] << 1;
 	};
 
 	_9XY0 = function(opcode) {
@@ -103,10 +133,12 @@ CHIP8.Opcodes = (function() {
 
 	_BNNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [BNNN] Jumps to the address NNN plus V0.' );
+		this.pc = NNN + this.V[0];
 	};
 
 	_CXNN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [CXNN] Sets VX to a random number and NN.' );
+		this.V[X] = Math.random()*0xFF & NN;
 	};
 
 	_DXYN = function(opcode) {

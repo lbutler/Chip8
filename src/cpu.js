@@ -27,12 +27,12 @@ CHIP8.Cpu = (function() {
 
 
 	Cpu.loadProgram = function(program) {
-      for (var i = 0, length = program.length; i < length; i++) {
-        this.memory[0x200 + i] = program[i];
-      }
-    };
+		for (var i = 0, length = program.length; i < length; i++) {
+			this.memory[0x200 + i] = program[i];
+		}
+	};
 
-    Cpu.emulateCycle = function() {
+	Cpu.emulateCycle = function() {
 		//Grab opcode
 		var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
 		this.pc += 2;
