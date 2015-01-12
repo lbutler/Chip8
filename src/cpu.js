@@ -10,6 +10,7 @@ CHIP8.Cpu = (function() {
 	Cpu.V = new Uint8Array(16);
 	Cpu.I = 0;
 	Cpu.memory = new Uint8Array(4096);
+	Cpu.running = false;
 
 	Cpu.displayWidth = 64;
 	Cpu.displayHeight = 32;
@@ -23,6 +24,7 @@ CHIP8.Cpu = (function() {
 	var keys = {};
 
 	Cpu.opcodes = { getOperation: function(opcode) {} };
+	Cpu.keyboard = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
 
 	var loadFonts = function() {
 		var fonts = [
@@ -68,10 +70,10 @@ CHIP8.Cpu = (function() {
 		opcodeFunc(opcode);
 
 		//Update timers
-		if(this.delayTimer > 0)
+		if(this.delayTimer > 0 && this.running)
 			--this.delayTimer;
 
-		if(this.soundTimer > 0)
+		if(this.soundTimer > 0 && this.running)
 		{
 			if(this.soundTimer === 1)
 				console.log("BEEP"); //Todo make sound object
