@@ -229,7 +229,7 @@ CHIP8.Opcodes = (function() {
 			'e': _00EE
 		};
 
-		return _0opcodes[(opcode & 0x000f)];
+		return _0opcodes[(opcode & 0x000f).toString(16)];
 	};
 
 	_8Table = function(opcode) {
@@ -245,7 +245,7 @@ CHIP8.Opcodes = (function() {
 			'e': _8XYE
 		};
 
-		return _8opcodes[(opcode & 0x000f)];
+		return _8opcodes[(opcode & 0x000f).toString(16)];
 	};
 
 	_ETable = function(opcode) {
@@ -255,7 +255,7 @@ CHIP8.Opcodes = (function() {
 			'a': _EXA1
 		};
 
-		return _Eopcodes[(opcode & 0x00f0)>>4];
+		return _Eopcodes[((opcode & 0x00f0)>>4).toString(16)];
 	};
 	
 	_FTable = function(opcode) {
