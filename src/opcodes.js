@@ -263,10 +263,10 @@ CHIP8.Opcodes = (function() {
 
 		var _Fopcodes = {
 			'7': _FX07,
-			'A': _FX0A,
+			'a': _FX0A,
 			'15': _FX15,
 			'18': _FX18,
-			'1E': _FX1E,
+			'1e': _FX1E,
 			'29': _FX29,
 			'33': _FX33,
 			'55': _FX55,
