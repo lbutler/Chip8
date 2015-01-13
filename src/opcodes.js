@@ -10,7 +10,6 @@ CHIP8.Opcodes = (function() {
 	var X;   //4-bit register identifier
 	var Y;   //4-bit register identifier
 
-
 	// Opcodes
 
 	opERR = function(opcode) {
@@ -277,10 +276,30 @@ CHIP8.Opcodes = (function() {
 		return _Fopcodes[(opcode & 0x00ff).toString(16)];
 	};
 	
-	var opcodeTable = [
-		_0Table, _1NNN,	_2NNN, _3XNN, _4XNN, _5XY0, _6XNN, _7XNN,
-		_8Table, _9XY0, _ANNN, _BNNN, _CXNN, _DXYN, _ETable, _FTable
-	];
+
+	opcodeTable = function(opcode) {
+
+		var opcodeTable = {
+			"0": _0Table(opcode),
+			"1": _1NNN,
+			"2": _2NNN,
+			"3": _3XNN,
+			"4": _4XNN,
+			"5": _5XY0,
+			"6": _6XNN,
+			"7": _7XNN,
+			"8": _8Table(opcode),
+			"9": _9XY0,
+			"a": _ANNN,
+			"b": _BNNN,
+			"c": _CXNN,
+			"d": _DXYN,
+			"e": _ETable(opcode),
+			"f": _FTable(opcode)
+		};
+
+		return opcodeTable[((opcode & 0xf000)>>12).toString(16)];
+	};
 
 
 	// Public Methods
@@ -293,7 +312,7 @@ CHIP8.Opcodes = (function() {
 		X = (opcode & 0x0F00) >> 8;
 		Y = (opcode & 0x00F0) >> 4;
 
-		return opcodeTable[(opcode & 0xf000)>>12];
+		return opcodeTable(opcode);
     };
 
 
