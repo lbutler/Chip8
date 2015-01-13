@@ -11,11 +11,6 @@ CHIP8.Opcodes = (function() {
 	var Y;   //4-bit register identifier
 
 	// Opcodes
-
-	opERR = function(opcode) {
-		throw new Error("Unknown opcode " + opcode.toString(16));
-	};
-
 	_00E0 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [00E0] Clears the screen.' );
 	};
@@ -229,32 +224,36 @@ CHIP8.Opcodes = (function() {
 	// Opcode Lookup tables
 
 	_0Table = function(opcode) {
-		var _0opcodes = [
-			_00E0,
-			opERR, opERR, opERR, opERR, opERR, opERR, opERR,opERR,opERR, opERR, opERR, opERR, opERR,
-			_00EE,
-			opERR
-		];
+		var _0opcodes = {
+			'0': _00E0,
+			'e': _00EE
+		};
 
 		return _0opcodes[(opcode & 0x000f)];
 	};
 
 	_8Table = function(opcode) {
-		var _8opcodes = [
-			_8XY0, _8XY1, _8XY2, _8XY3, _8XY4, _8XY5, _8XY6, _8XY7,
-			opERR, opERR, opERR, opERR, opERR, opERR, _8XYE, opERR
-		];
+		var _8opcodes = {
+			'0': _8XY0,
+			'1': _8XY1,
+			'2': _8XY2,
+			'3': _8XY3,
+			'4': _8XY4,
+			'5': _8XY5,
+			'6': _8XY6,
+			'7': _8XY7,
+			'e': _8XYE
+		};
 
 		return _8opcodes[(opcode & 0x000f)];
 	};
 
 	_ETable = function(opcode) {
-		var _Eopcodes = [
-			opERR, opERR, opERR, opERR, opERR, opERR, opERR, opERR,	opERR,
-			_EX9E,
-			_EXA1,
-			opERR, opERR, opERR, opERR, opERR
-		];
+
+		var _Eopcodes = {
+			'9': _EX9E,
+			'a': _EXA1
+		};
 
 		return _Eopcodes[(opcode & 0x00f0)>>4];
 	};
