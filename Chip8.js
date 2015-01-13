@@ -6,8 +6,6 @@
 
 	CHIP8.Cpu.loadProgram(guess);
 
-	console.log(CHIP8.Cpu);
-
 	var cycleButton = document.getElementById('emulate-cycle');
 	cycleButton.onclick = function() { CHIP8.Cpu.emulateCycle(); };
 })();
