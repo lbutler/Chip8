@@ -51,6 +51,12 @@ CHIP8.Cpu = (function() {
 		}
 	};
 
+	Cpu.clearScreen = function() {
+		for (var i = 0, length = gfx.length; i < length; i++) {
+			this.gfx[i] = 0;
+		}
+	};
+
 	Cpu.loadProgram = function(program) {
 
 		loadFonts();

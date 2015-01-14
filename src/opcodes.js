@@ -13,6 +13,7 @@ CHIP8.Opcodes = (function() {
 	// Opcodes
 	_00E0 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [00E0] Clears the screen.' );
+		this.clearScreen();
 	};
 
 	_00EE = function(opcode) {
