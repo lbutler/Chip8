@@ -52,9 +52,31 @@ CHIP8.Cpu = (function() {
 	};
 
 	Cpu.clearScreen = function() {
-		for (var i = 0, length = gfx.length; i < length; i++) {
-			this.gfx[i] = 0;
+		for (var i = 0, length = Cpu.gfx.length; i < length; i++) {
+			Cpu.gfx[i] = 0;
 		}
+	};
+
+	Cpu.setPixel = function(x, y) {
+
+		if (x > Cpu.displayWidth) {
+			x -= Cpu.displayWidth;
+		} else if (x < 0) {
+			x += Cpu.displayWidth;
+		}
+
+		if (y > Cpu.displayHeight) {
+			y -= Cpu.displayHeight;
+		} else if (y < 0) {
+			y += Cpu.displayHeight;
+		}
+
+		var location = x + (y * Cpu.displayWidth);
+
+		Cpu.gfx[location] ^= 1;
+
+		return !Cpu.gfx[location];
+
 	};
 
 	Cpu.loadProgram = function(program) {

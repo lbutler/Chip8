@@ -147,6 +147,27 @@ CHIP8.Opcodes = (function() {
 
 	_DXYN = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [DXYN] Sprites stored in memory at location in index register (I), maximum 8bits wide. Wraps around the screen. If when drawn, clears a pixel, register VF is set to 1 otherwise it is zero. All drawing is XOR drawing (i.e. it toggles the screen pixels)' );
+		
+		this.V[0xf] = 0;
+
+		var row, col, sprite;
+
+		for (row = 0; row < N; row++) {
+			sprite = this.memory[this.I + row];
+
+			for (col = 0; col < 8; col++) {
+
+				if((sprite & 0x80 )> 0) {
+					if (this.setPixel(this.V[X] + col, this.V[Y] + row )) {
+						this.V[0xf] = 1;
+					}
+				}
+				
+				sprite <<= 1;
+
+			}
+		}
+
 	};
 
 	_EX9E = function(opcode) {
