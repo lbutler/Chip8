@@ -176,13 +176,13 @@ CHIP8.Opcodes = (function() {
 
 	var _EX9E = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [EX9E] Skips the next instruction if the key stored in VX is pressed.' );
-		if( this.keyboard.isKeyPressed(this.V[X]))
+		if( this.inputDevice.isKeyPressed(this.V[X]))
 			this.pc += 2;
 	};
 
 	var _EXA1 = function(opcode) {
 		console.log( (opcode).toString(16) + ' - [EXA1] Skips the next instruction if the key stored in VX isnt pressed.' );
-		if( this.keyboard.isKeyPressed(this.V[X]) ===  false)
+		if( this.inputDevice.isKeyPressed(this.V[X]) ===  false)
 			this.pc += 2;
 	};
 
@@ -193,7 +193,7 @@ CHIP8.Opcodes = (function() {
 
 	var _FX0A = function(opcode) {
 		console.log( (opcode).toString(16) + ' - FX0A] - A key press is awaited, and then stored in VX.' );
-		var keyReturn = this.keyboard.waitForKeyPress();
+		var keyReturn = this.inputDevice.waitForKeyPress();
 		if (keyReturn !== null){
 			this.V[X] = keyReturn;
 			this.running = true;

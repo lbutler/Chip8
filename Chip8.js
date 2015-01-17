@@ -9,11 +9,11 @@
 	var emulator =  new CHIP8.Cpu();
 	emulator.opcodes = new CHIP8.Opcodes();
 	emulator.video = new CHIP8.CanvasScreen(emulator.gfx);
-	emulator.inputDevice = new CHIP8.keyboard();
+	emulator.inputDevice = new CHIP8.Keyboard();
 
 	console.log(emulator);
 
-	emulator.loadProgram(guess);
+	emulator.loadProgram(pong);
 
 	var dumpMemoryArray = function(memoryItem, target) {
 		var div = document.getElementById(target);
@@ -43,6 +43,6 @@
 	drawButton.onclick = function() { emulator.video.draw(); };
 
 	var intervalButton = document.getElementById('interval-cycle');
-	intervalButton.onclick = function() { setInterval(function(){ emulator.emulateCycle(); }, 100);};
+	intervalButton.onclick = function() { setInterval(function(){ emulator.emulateCycle(); }, 10);};
 
 })();
