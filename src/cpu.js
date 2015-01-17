@@ -1,33 +1,37 @@
 var CHIP8 = CHIP8 || {};
 
 CHIP8.Cpu = (function() {
+	'use strict';
 
-	var Cpu = {};
+	var Cpu = function Cpu() {
 
-	Cpu.pc = 0x200;
-	Cpu.stack = new Array(16);
-	Cpu.sp = 0;
-	Cpu.V = new Uint8Array(16);
-	Cpu.I = 0;
-	Cpu.memory = new Uint8Array(4096);
-	Cpu.running = true;
+		this.pc = 0x200;
+		this.stack = new Array(16);
+		this.sp = 0;
+		this.V = new Uint8Array(16);
+		this.I = 0;
+		this.memory = new Uint8Array(4096);
+		this.running = true;
 
-	Cpu.displayWidth = 64;
-	Cpu.displayHeight = 32;
-	Cpu.gfx = new Array(Cpu.displayWidth * Cpu.displayHeight);
+		this.displayWidth = 64;
+		this.displayHeight = 32;
+		this.gfx = new Array(this.displayWidth * this.displayHeight);
 
-	Cpu.drawFlag = false;
+		this.drawFlag = false;
 
-	Cpu.delayTimer = 0;
-	Cpu.soundTimer = 0;
+		this.delayTimer = 0;
+		this.soundTimer = 0;
 
-	var keys = {};
+		var keys = {};
 
-	Cpu.opcodes = { getOperation: function(opcode) {} };
-	Cpu.keyboard = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
-	Cpu.video = { draw: function() {} };
+		this.opcodes = { getOperation: function(opcode) {} };
+		this.keyboard = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
+		this.video = { draw: function() {} };
 
-	var loadFonts = function() {
+
+	};
+
+	Cpu.prototype.loadFonts = function() {
 		var fonts = [
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 			0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -48,49 +52,50 @@ CHIP8.Cpu = (function() {
 		];
 
 		for (var i = 0, length = fonts.length; i < length; i++) {
-			Cpu.memory[i] = fonts[i];
+			this.memory[i] = fonts[i];
 		}
 	};
 
 
-	Cpu.setPixel = function(x, y) {
 
-		if (x > Cpu.displayWidth) {
-			x -= Cpu.displayWidth;
+	Cpu.prototype.setPixel = function(x, y) {
+
+		if (x > this.displayWidth) {
+			x -= this.displayWidth;
 		} else if (x < 0) {
-			x += Cpu.displayWidth;
+			x += this.displayWidth;
 		}
 
-		if (y > Cpu.displayHeight) {
-			y -= Cpu.displayHeight;
+		if (y > this.displayHeight) {
+			y -= this.displayHeight;
 		} else if (y < 0) {
-			y += Cpu.displayHeight;
+			y += this.displayHeight;
 		}
 
-		var location = x + (y * Cpu.displayWidth);
+		var location = x + (y * this.displayWidth);
 
-		Cpu.gfx[location] ^= 1;
+		this.gfx[location] ^= 1;
 
-		return !Cpu.gfx[location];
+		return !this.gfx[location];
 
 	};
 
-	Cpu.loadProgram = function(program) {
+	Cpu.prototype.loadProgram = function(program) {
 
-		loadFonts();
+		this.loadFonts();
 			
 		for (var i = 0, length = program.length; i < length; i++) {
 			this.memory[0x200 + i] = program[i];
 		}
 	};
 
-	Cpu.emulateCycle = function() {
+	Cpu.prototype.emulateCycle = function() {
 		//Grab opcode
 		var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
 		this.pc += 2;
 
 		//Find and then run opcode function
-		var opcodeFunc = this.opcodes.getOperation(opcode).bind(Cpu);
+		var opcodeFunc = this.opcodes.getOperation(opcode).bind(this);
 		opcodeFunc(opcode);
 
 		//Update timers
