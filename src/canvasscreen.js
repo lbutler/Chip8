@@ -16,6 +16,10 @@ CHIP8.CanvasScreen = (function() {
 
 	CanvasScreen.prototype.clearScreen = function() {
 
+		for (var i = 0, length = gfx.length; i < length; i++) {
+			gfx[i] = 0;
+		}
+
 		canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
