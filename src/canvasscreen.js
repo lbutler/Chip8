@@ -1,6 +1,7 @@
 var CHIP8 = CHIP8 || {};
 
 CHIP8.CanvasScreen = (function() {
+	'use strict';
 
 	var scale = 10;
 	var canvas;
