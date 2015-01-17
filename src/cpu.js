@@ -10,7 +10,7 @@ CHIP8.Cpu = (function() {
 	Cpu.V = new Uint8Array(16);
 	Cpu.I = 0;
 	Cpu.memory = new Uint8Array(4096);
-	Cpu.running = false;
+	Cpu.running = true;
 
 	Cpu.displayWidth = 64;
 	Cpu.displayHeight = 32;
@@ -25,6 +25,7 @@ CHIP8.Cpu = (function() {
 
 	Cpu.opcodes = { getOperation: function(opcode) {} };
 	Cpu.keyboard = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
+	Cpu.video = { draw: function() {} };
 
 	var loadFonts = function() {
 		var fonts = [
@@ -51,11 +52,6 @@ CHIP8.Cpu = (function() {
 		}
 	};
 
-	Cpu.clearScreen = function() {
-		for (var i = 0, length = Cpu.gfx.length; i < length; i++) {
-			Cpu.gfx[i] = 0;
-		}
-	};
 
 	Cpu.setPixel = function(x, y) {
 
