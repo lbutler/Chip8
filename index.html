@@ -13,14 +13,44 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<link rel="shortcut icon" href="">
+
 	</head>
 	<body>
 
+		<canvas id="canvas" width="640" height="320"></canvas>
+		<div>
+			<button id="emulate-cycle">Emulate Cycle</button>
+			<button id="draw-screen">Draw Screen</button>
+		</div>
 
-		<button id="emulate-cycle">Emulate Cycle</button>
-		<!-- SCRIPTS -->
+		<div>
+			<h4>Register V</h4>
+			<ul id="debug-V"></ul>
+		</div>
+
+		<div>
+			<h4>Register I</h4>
+			<ul id="debug-I"></ul>
+		</div>
+
+		<div>
+			<h4>PC</h4>
+			<ul id="debug-pc"></ul>
+		</div>
+
+		<div>
+			<h4>SP</h4>
+			<ul id="debug-sp"></ul>
+		</div>
+
+		<div>
+			<h4>Stack</h4>
+			<ul id="debug-stack"></ul>
+		</div>
+
 		<script src="src/cpu.js"></script>
 		<script src="src/opcodes.js"></script>
+		<script src="src/canvasscreen.js"></script>
 		<script src="Chip8.js"></script>
 	</body>
 </html>
