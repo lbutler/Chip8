@@ -9,6 +9,7 @@
 	var emulator =  new CHIP8.Cpu();
 	emulator.opcodes = new CHIP8.Opcodes();
 	emulator.video = new CHIP8.CanvasScreen(emulator.gfx);
+	emulator.inputDevice = new CHIP8.keyboard();
 
 	console.log(emulator);
 

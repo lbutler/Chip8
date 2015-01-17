@@ -25,7 +25,7 @@ CHIP8.Cpu = (function() {
 		var keys = {};
 
 		this.opcodes = { getOperation: function(opcode) {} };
-		this.keyboard = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
+		this.inputDevice = { isKeyPressed: function(key) {}, waitForKeyPress: function(){ return null;} };
 		this.video = { draw: function() {} };
 
 
