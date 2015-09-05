@@ -12,47 +12,72 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 		<link rel="shortcut icon" href="">
+		<style>
+			body {
+			  padding-top: 50px;
+			}
+
+			#canvas {
+				border: 5px solid;
+				border-color: black;
+			}
+
+		</style>
 
 	</head>
 	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+			<div class="navbar-header">
+			<a class="navbar-brand" href="#">Chip8</a>
+			</div>
+			
+			</div>
+		</nav>
+		<div class="container">
+			<h2>Chip 8 Debug Mode</h2>
+			<canvas id="canvas" width="640" height="320"></canvas>
+			<div>
+				<button id="emulate-cycle">Emulate Cycle</button>
+				<button id="draw-screen">Draw Screen</button>
+				<button id="interval-cycle">Start Interval Cycle</button>
+			</div>
 
-		<canvas id="canvas" width="640" height="320"></canvas>
-		<div>
-			<button id="emulate-cycle">Emulate Cycle</button>
-			<button id="draw-screen">Draw Screen</button>
-			<button id="interval-cycle">Start Interval Cycle</button>
+			<div>
+				<h4>Register V</h4>
+				<ul id="debug-V"></ul>
+			</div>
+
+			<div>
+				<h4>Register I</h4>
+				<ul id="debug-I"></ul>
+			</div>
+
+			<div>
+				<h4>PC</h4>
+				<ul id="debug-pc"></ul>
+			</div>
+
+			<div>
+				<h4>SP</h4>
+				<ul id="debug-sp"></ul>
+			</div>
+
+			<div>
+				<h4>Stack</h4>
+				<ul id="debug-stack"></ul>
+			</div>
 		</div>
-
-		<div>
-			<h4>Register V</h4>
-			<ul id="debug-V"></ul>
-		</div>
-
-		<div>
-			<h4>Register I</h4>
-			<ul id="debug-I"></ul>
-		</div>
-
-		<div>
-			<h4>PC</h4>
-			<ul id="debug-pc"></ul>
-		</div>
-
-		<div>
-			<h4>SP</h4>
-			<ul id="debug-sp"></ul>
-		</div>
-
-		<div>
-			<h4>Stack</h4>
-			<ul id="debug-stack"></ul>
-		</div>
-
 		<script src="src/cpu.js"></script>
 		<script src="src/opcodes.js"></script>
 		<script src="src/canvasscreen.js"></script>
 		<script src="src/keyboard.js"></script>
 		<script src="Chip8.js"></script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 	</body>
 </html>
